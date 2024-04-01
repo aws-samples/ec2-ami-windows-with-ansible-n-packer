@@ -10,11 +10,11 @@
     groupId: com.devops.demo
   
   tasks:
-    # Donload from artifacts
+    # Donload from nexus artifacts
     - name: SET VARIABLE NEXUS REPOSITORY
       set_fact:
         repository_name="maven-snapshots"
-         nexus_server: http://{{ nexus_server_ip }}:8081/service/rest/v1/search/assets
+        nexus_server: http://{{ nexus_server_ip }}:8081/service/rest/v1/search/assets
   
     - name: Create necessary directories for the application
       win_file:
