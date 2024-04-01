@@ -1,0 +1,27 @@
+stages:
+  - create-golden-ami
+
+variables:
+  VERSION:  
+    value: "packer_1.10.0_linux_amd64.zip"  # Deploy to staging by default
+    description: "Artifact build version to deploy"
+
+create-windows-golden-ami:
+  stage: create-golden-ami
+  image: "alpinelinux/ansible"
+  script:
+      # Install-Packer
+      - wget "https://releases.hashicorp.com/packer/1.10.0/$VERSION"
+      - unzip "$VERSION" -d /usr/local/bin/
+
+      - cd packer
+      - sed -i "/$Env:PASSWORD/c\net user Administrator $USER_PASSWORD" bootstrap_win.ps1
+      - python3 -m pip install --upgrade pip
+      - apk update
+      - python3 -m pip install pywinrm
+
+      # Call packer file execution
+      - packer init . #nstall missing plugins or upgrade plugins
+      - packer validate . #check that a template is valid
+      - packer build .  #build image(s) from template
+

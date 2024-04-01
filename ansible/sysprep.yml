@@ -1,0 +1,50 @@
+---
+# hardening sysprep.yml
+- name: WINDOWS EC2 FOR AMI
+  hosts: all
+  gather_facts: no
+  vars:
+    download_dir: C:\Temp\
+    nexus_server: http://{{ nexus_server_ip }}:8081/service/rest/v1/search/assets
+    artifactId: MavenHelloWorld
+    groupId: com.devops.demo
+  
+  tasks:
+    # Donload from artifacts
+    - name: SET VARIABLE NEXUS REPOSITORY
+      set_fact:
+        repository_name="maven-snapshots"
+         nexus_server: http://{{ nexus_server_ip }}:8081/service/rest/v1/search/assets
+  
+    - name: Create necessary directories for the application
+      win_file:
+        path: "{{ item }}"
+        state: directory
+      loop:
+        -  c:/temp
+
+    - name: PRINT VARIABLES VALUE
+      debug:
+        msg:
+        - "nexus_url -> {{ artifactId }}"
+
+    - name: GENERATE DYNAMIC URL IN VARIABLE result
+      win_uri:
+        url: "{{ nexus_server }}/download?&repository={{ repository_name }}&maven.groupId={{ groupId }}&maven.artifactId={{ artifactId }}&maven.extension=jar&sort=version"
+        url_username: "{{ nexus_username }}"
+        url_password: "{{ nexus_password }}"
+        headers:
+          Content-Type: "application/json"
+        method: GET
+        force_basic_auth: yes
+        status_code: 200
+        return_content: yes
+      register: result
+      ignore_errors: true
+
+    - name: DOWNLOAD LATEST ARTIFACTS FROM NEXUS
+      win_get_url:
+        url: "{{ result.response_uri }}"
+        dest: '{{ download_dir }}'
+        url_username: "{{ nexus_username }}"
+        url_password: "{{ nexus_password }}"
