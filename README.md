@@ -7,7 +7,7 @@ Use case is simple create the AMI using the Packer and  download maven artifacts
 
 # Quickstart
 1. Clone Repo
-    ```git clone https://github.com/aws-samples/ec2-ami-windows-with-ansible-n-packer``
+    ```git clone https://github.com/aws-samples/ec2-ami-windows-with-ansible-n-packer```
 2. Update Packer Script
 Add or Replace the parameter values in your ec2-ami-windows-with-ansible-n-packer\packer\variables.pkr.hcl file with "parameters", as in sample below. For e.g. The value of instance_type = "t3.medium“  region = "us-east-1”
 Replace few parameter value in ansible script ansible/sysprep.yml nexus_server: http://<nexus_server_url>/service/rest/v1/search/assets, artifactId: <com.devops.demo>,  artifactId: <MavenHelloWorld>
