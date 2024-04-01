@@ -1,4 +1,4 @@
-## EC2 Windows AMI Creation With Ansible and Packer
+# EC2 Windows AMI Creation With Ansible and Packer
 
 Description
 There are multiple Ansible resources available to download the latest maven artifact on AWS EC2, but this works only on a Linux OS. When we try them on an AWS EC2 with Windows OS it fails. This pattern guides how this problem can be resolved.
