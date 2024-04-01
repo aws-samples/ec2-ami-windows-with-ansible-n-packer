@@ -41,8 +41,6 @@ $Setting = 'LocalAccountTokenFilterPolicy'
 Set-ItemProperty -Path $Key -Name $Setting -Value 1 -Force
 
 # Configure and restart the WinRM Service; Enable the required firewall exception
-# netsh advfirewall firewall set rule name="Windows Remote Management (HTTP-In)" new enable=yes
-# netsh firewall add portopening TCP 5985 "Port 5985"
 cmd.exe /c netsh advfirewall firewall set rule group="remote administration" new enable=yes
 netsh advfirewall firewall set rule name="Windows Remote Management (HTTPS-In)" new enable=yes
 netsh firewall add portopening TCP 5986 "Port 5986"
